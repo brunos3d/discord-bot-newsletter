@@ -5,11 +5,16 @@ import parseGoogleDocsJson from "parse-google-docs-json";
 dotenv.config();
 
 const { BOT_TOKEN, PARSE_GOOGLE_DOCS_DOCUMENT_ID, PARSE_GOOGLE_DOCS_CLIENT_EMAIL, PARSE_GOOGLE_DOCS_PRIVATE_KEY } = process.env;
+
 const DISCORD_CLIENT = new Client();
 
 DISCORD_CLIENT.on("ready", () => {
     console.log(`Logged in as ${DISCORD_CLIENT.user.tag}!`);
 });
+
+function getStringAfterSubstring(parentString, substring) {
+    return parentString.substring(parentString.indexOf(substring) + substring.length);
+}
 
 DISCORD_CLIENT.on("message", async (messsage) => {
     // prevent the bot from responding itself
@@ -22,10 +27,11 @@ DISCORD_CLIENT.on("message", async (messsage) => {
                 privateKey: PARSE_GOOGLE_DOCS_PRIVATE_KEY,
             });
 
-            console.log(parsed.toJson());
-            console.log(parsed.toMarkdown());
+            // console.log(parsed.toJson().content.filter((el) => !!(!("p" in el) || el["p"].length)));
 
-            messsage.reply(parsed.toMarkdown());
+            const newsContent = getStringAfterSubstring(parsed.toMarkdown().replace(/\n\n\n/g, "\n"), "null\n---");
+
+            messsage.reply(newsContent);
         }
     }
 });
