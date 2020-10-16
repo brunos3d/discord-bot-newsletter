@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "parse-google-docs-json": "^1.1.1"
   },
   "devDependencies": {
     "@types/node": "^14.0.27",
